@@ -17,8 +17,8 @@ services:
       - 5004:5000
     environment:
       - FLASK_ENV=development
-      - DATABASE_URL=mongodb+srv://admin:admin@tweets.8ugzv.mongodb.net/tweets?retryWrites=true&w=majority
-      - DATABASE_TEST_URL=mongodb://localhost:27017/
+      - DATABASE_URL= mongodb://mongo:27017/
+      - DATABASE_TEST_URL=mongodb://mongo:27017/
     networks:
       - backend
 
@@ -43,6 +43,13 @@ services:
     # specifies frontend and backend as the networks the fe service will have access to
     networks:
       - frontend
+      - backend
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - "27017:27017"
+    networks:
       - backend
       
 # bridge networks to allow the containers to communicate with each other

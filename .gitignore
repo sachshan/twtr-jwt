@@ -3,4 +3,8 @@ node_modules
 build
 .coverage
 env
-
+venv
+__pycache__
+.env
+.DS_Store
+CheatSheet.txt
