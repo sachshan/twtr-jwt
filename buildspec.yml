@@ -32,8 +32,8 @@ phases:
       --build-arg NODE_ENV=production \
       --build-arg REACT_APP_API_SERVICE_URL=$REACT_APP_API_SERVICE_URL \
       ./fe
-  post_build:
-   commands:
-    - echo pushing prod images to ECR...
-    - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/twtr-be:prod
-    - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/twtr-fe:prod
+ post_build:
+  commands:
+   - echo pushing prod images to ECR...
+   - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/twtr-be:prod
+   - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/twtr-fe:prod
