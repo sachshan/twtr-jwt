@@ -1,6 +1,6 @@
 #FROM python:3.6.6-alpine
 #FROM python:3-slim
-FROM python:3.9-slim-buster
+FROM public.ecr.aws/docker/library/python:3.9-slim-buster
 WORKDIR /app
 ADD . .
 #RUN apk update

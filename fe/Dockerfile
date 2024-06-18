@@ -3,7 +3,7 @@
 ###########
 
 # pull official base image
-FROM node:15.2.0-alpine as builder
+FROM public.ecr.aws/docker/library/node:15.2.0-alpine as builder
 
 # set working directory
 WORKDIR /usr/src/app
@@ -32,7 +32,7 @@ RUN npm run build
 #########
 
 # base image
-FROM nginx
+FROM public.ecr.aws/docker/library/nginx:stable-perl
 
 # update nginx conf
 #RUN rm -rf /etc/nginx/conf.d
