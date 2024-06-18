@@ -32,8 +32,8 @@ import jwt
 g = dict()
 
 # mongo
-mongo_client = MongoClient("mongodb://mongo:27017/")
-#mongo_client = MongoClient("mongodb+srv://admin:admin@tweets.8ugzv.mongodb.net/tweets?retryWrites=true&w=majority")
+# mongo_client = MongoClient("mongodb://mongo:27017/")
+mongo_client = MongoClient("mongodb+srv://sachdeva:2P0m0Yb5FYK7InvM@cluster0.5ngjycd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 class MyMongo(object):
     def __init__(self, db_name):
         self.db_name = db_name
