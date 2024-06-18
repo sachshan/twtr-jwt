@@ -6,9 +6,6 @@ env:
   REACT_APP_API_SERVICE_URL: "http://localhost:5004"
 
 phases:
- install:
-  runtime-versions:
-    docker: latest
  pre_build:
   commands:
    - echo Logging in to Amazon ECR...
