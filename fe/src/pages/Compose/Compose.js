@@ -97,7 +97,7 @@ const Compose = () => {
           body: JSON.stringify(paramdict)
       }
       console.log("Compose.js: fetching from " + `${process.env.REACT_APP_API_SERVICE_URL}/tweet`)
-      const response = await fetch(`${process.env.REACT_APP_API_SERVICE_URL}/tweet`, config);
+      const response = await fetch(`/tweet`, config);
       // const response = await fetch(`${process.env.REACT_APP_BE_NETWORK}:${process.env.REACT_APP_BE_PORT}/tweet`, config);
       // const response = await fetch(`tweet`, config);
       //const json = await response.json()
