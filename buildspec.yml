@@ -19,6 +19,8 @@ phases:
      docker build \
       -f be/Dockerfile \
       -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/twtr-be:prod \
+      --build-arg REDIS_HOST=$REDIS_HOST \
+      --build-arg REDIS_PORT=$REDIS_PORT \
       ./be
    - >
      docker build \

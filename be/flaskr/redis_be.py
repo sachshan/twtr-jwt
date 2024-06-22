@@ -9,6 +9,7 @@ class Redis:
         except:
             raise Exception("Unable to connect to Redis")
         
+    
     def get_redis_client(self):
         return self.redis_client
     
