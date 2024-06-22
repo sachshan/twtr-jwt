@@ -14,6 +14,9 @@ pip install --upgrade pip
 # Install the required packages
 pip install -r requirements.txt
 
+export REDIS_HOST='localhost'
+export REDIS_PORT=6379
+
 # Run the Flask app
-python3 wsgi.py
- 
+flask --app flaskr run
+# gunicorn --threads=3 --bind 0.0.0.0:5000 wsgi:app 

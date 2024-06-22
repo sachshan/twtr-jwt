@@ -12,5 +12,6 @@ RUN adduser --disabled-password myuser
 USER myuser
 
 # run gunicorn with 3 threads listening on port 5000.
-EXPOSE 5000
-CMD gunicorn --threads=3 --bind 0.0.0.0:5000 wsgi:app
+EXPOSE 5001
+# CMD gunicorn --threads=3 --bind 0.0.0.0:5000 wsgi:app
+CMD gunicorn --threads=3 --bind 0.0.0.0:5000 'flaskr:create_app()'

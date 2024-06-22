@@ -14,4 +14,4 @@ pytz
 dnspython
 # bson
 jwt
-
+redis
