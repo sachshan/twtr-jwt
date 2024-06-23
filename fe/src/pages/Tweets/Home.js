@@ -8,8 +8,7 @@ const THome = () => {
   const [tweets, setTweets] = React.useState([]);
   const [loading, setLoading] = React.useState(true);   
   
-  const [locations, setLocations] = useState([[42.338655864160486, -71.08808567486311],
-    [42.338525, -71.088320]]);
+  const [locations, setLocations] = useState([]);
 
   // save keys to local storage
 const localStorageAuthKey = 'twtr:auth';
@@ -29,7 +28,6 @@ function getAuthorisation() {
   if (typeof Storage !== 'undefined') {
       try {
         var keys = JSON.parse(localStorage.getItem(localStorageAuthKey));
-        console.dir(keys.groupKey);
         return keys.groupKey;
 
       } catch (ex) {
@@ -78,7 +76,8 @@ function getAuthorisation() {
         .then(response => response.json())
         .then(data => {
           // update Location Array with all the locations with their Names
-          // setLocations(data);
+          // console.dir(data);
+          setLocations(data);
         
         })
         .catch( (err) => {
@@ -86,14 +85,16 @@ function getAuthorisation() {
           console.log(err);
         });
       
-      setLocations([[42.339655864160486, -71.08808567486311],
-        [42.338525, -71.088320]]);
-      pollingRef.current = setTimeout(pollLocations,3000);   
+      // setLocations([[42.338655864160486, -71.08808567486311],
+      //   [42.338525, -71.088320],
+      //   [42.338525, -71.089320]
+      // ]);
+      pollingRef.current = setTimeout(pollLocations,4000);   
     },[]);
 
     useEffect (
       () => {
-        pollingRef.current = setTimeout(pollLocations,3000);
+        pollingRef.current = setTimeout(pollLocations,4000);
         return () => {
           // Clear the timeout when the component unmounts
           if (pollingRef.current) {
@@ -109,11 +110,11 @@ function getAuthorisation() {
 {/* Map Structure */}
 
 
-<Map height={300} defaultCenter={[42.338655864160486, -71.08808567486311]} defaultZoom={18}>
+<Map height={500} defaultCenter={[42.338655864160486, -71.08808567486311]} defaultZoom={18}>
       {locations.map ((point, i) => (
-          <Overlay width={50} anchor={point} >
-            bob
-          </Overlay>
+          <Marker width={50} anchor={point.location} >
+            {point.user_name}
+          </Marker>
       ))}
     </Map>
 
