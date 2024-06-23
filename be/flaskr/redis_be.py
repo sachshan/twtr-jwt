@@ -25,7 +25,8 @@ class Redis:
     def get_group_locations(self, group_key):
         location_directory = []
         for user_name in self.redis_client.smembers(group_key):
-            location_directory.append({"user_name": user_name, "location": self.redis_client.geopos("person", user_name)[-1]})
+            location = self.redis_client.geopos("person", user_name)[-1]
+            location_directory.append({"user_name": user_name, "location": [location[-1], location[0]] })
         return location_directory
     
 
