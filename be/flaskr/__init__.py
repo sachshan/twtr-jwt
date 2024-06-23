@@ -1,11 +1,13 @@
 import os
 
 from flask import Flask
+from flask_cors import CORS
 
 from .redis_be import Redis
 
 def create_app():
     app = Flask(__name__)
+    CORS(app)
 
     try:
         redis = Redis(os.getenv('REDIS_HOST'), os.getenv('REDIS_PORT'))
