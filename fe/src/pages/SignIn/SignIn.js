@@ -98,7 +98,9 @@ const SignIn = () => {
   const classes = useStyles()
   const history = useHistory()
   const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const [groupName, setGroupName] = useState('')
+  const [longitude, setLongitude] = useState(0)
+  const [latitude,setLatitude] =  useState(0)
 
   // we submit username and password, we receive
   // access and refresh tokens in return. These
@@ -110,7 +112,10 @@ const SignIn = () => {
     //console.log(password);
     const paramdict = {
       'name': username,
-      'password': password
+      'group_key': groupName,
+      'long': longitude,
+      'lat': latitude
+
     }
     const config = {
       method: 'POST',
@@ -123,11 +128,55 @@ const SignIn = () => {
     console.log("sending out:");
     console.log(paramdict);
 
-    console.log("Signin.js: fetching from " + `${process.env.REACT_APP_API_SERVICE_URL}/login`)
+    console.log("Signin.js: fetching from " + `${process.env.REACT_APP_API_SERVICE_URL}/map/user`)
     // verify user/pwd, get encoded userid as access and refresh tokens in return
-    fetch(`/login`, config)
-    // fetch(`${process.env.REACT_APP_BE_NETWORK}:${process.env.REACT_APP_BE_PORT}/login`, config)
+    fetch(`http://localhost:5004/v1/map/user`, config)
+    // fetch(`${process.env.REACT_APP_BE_NETWORK}:${process.env.REACT_APP_BE_PORT}/map/user`, config)
     // fetch(`login`, config)
+      .then(response => response.json())
+      .then(data => {
+
+        // save to local storage
+        // console.log(data);
+        // console.log(data[0].access_token);
+        // console.log(data[0].refresh_token);
+        console.log('---');
+        console.dir(data);
+        saveAuthorisation({
+          groupKey: groupName
+        });
+
+        // back to landing page!
+        history.push("/");
+      })
+      .catch( (err) => {
+        alert(err);
+        console.log(err);
+      });
+  }
+
+  function deleteUser() {
+    console.log ("Delete User Hit")
+
+    const paramdict = {
+      'name': username,
+      'group_key': groupName,
+    }
+    const config = {
+      method: 'DELETE',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(paramdict)
+    }
+    console.log("sending out:");
+    console.log(paramdict);
+
+    console.log("Signin.js: fetching from " + `${process.env.REACT_APP_API_SERVICE_URL}/map/user`)
+
+    // fetch(`${process.env.REACT_APP_BE_NETWORK}:${process.env.REACT_APP_BE_PORT}/map/user`, config)
+    fetch(`http://localhost:5004/v1/map/user`, config)
       .then(response => response.json())
       .then(data => {
 
@@ -149,48 +198,9 @@ const SignIn = () => {
         alert(err);
         console.log(err);
       });
+
   }
 
-  // we submit our tokens and receive
-  // a refreshed a renewed access
-  // token unless the refresh token
-  // has expired
-  function handleFastSignIn() {
-
-    const paramdict = getAuthorisation();
-    const config = {
-      method: 'POST',
-      headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(paramdict)
-    }
-
-    console.log("Signin.js: fetching from " + `${process.env.REACT_APP_API_SERVICE_URL}/fastlogin`)
-    // verify user/pwd, get encoded userid as access and refresh tokens in return
-    fetch(`/fastlogin`, config)
-    // fetch(`${process.env.REACT_APP_BE_NETWORK}:${process.env.REACT_APP_BE_PORT}/fastlogin`, config)
-    // fetch(`fastlogin`, config)
-      .then(response => response.json())
-      .then(data => {
-
-        // save to local storage
-        console.log("received these keys in return:")
-        console.log(data);
-        saveAuthorisation({
-          access: data[0][0],
-          refresh: data[0][1],
-        });
-
-        // back to landing page!
-        history.push("/");
-      })
-      .catch( (err) => {
-        alert(err);
-        console.log(err);
-      });
-  }
 
   // Logout attempt
   const handleSignOut = () => { 
@@ -205,26 +215,26 @@ const SignIn = () => {
     <React.Fragment>
       <Paper className={classes.paper} elevation={6}>
         <div className={classes.container}>
-          <Typography component="h1" variant="h5" className={classes.padding}>
+          {/* <Typography component="h1" variant="h5" className={classes.padding}>
             {'Sign Out'}
           </Typography> 
           <Typography gutterBottom>If you are not the only one on this device.</Typography>
           <Button fullWidth variant="contained" margin="normal" color="secondary" onClick={handleSignOut} className={classes.buttonPadding}>
             {'Sign Out'}
-          </Button>
+          </Button> */}
 
-          <Typography component="h1" variant="h5" className={classes.padding}>
+          {/* <Typography component="h1" variant="h5" className={classes.padding}>
             {'Fast Sign In'}
           </Typography>
           <Typography gutterBottom>If this is your device.</Typography>
           <Button fullWidth variant="contained" margin="normal" color="primary" onClick={handleFastSignIn} className={classes.buttonPadding}>
             {'Sign In'}
-          </Button>
+          </Button> */}
 
           <Typography component="h1" variant="h5">
-            {'Password Sign In'}
+            {'Enter Username and Group Name'}
           </Typography>
-          <Typography gutterBottom>You may password-sign-in on any device.</Typography>
+          {/* <Typography gutterBottom>You may password-sign-in on any device.</Typography> */}
           <form className={classes.form} onSubmit={handleSubmit} noValidate>
             <TextField
               value={username}
@@ -240,17 +250,17 @@ const SignIn = () => {
               autoFocus
             />
             <TextField
-              value={password}
-              onInput={(e) => setPassword(e.target.value)}
+              value={groupName}
+              onInput={(e) => setGroupName(e.target.value)}
               variant="outlined"
               margin="normal"
               required
               fullWidth
-              name="password"
-              label={'Password'}
-              type="password"
-              id="password"
-              autoComplete="current-password"
+              name="groupName"
+              label={'Group Name'}
+              type="groupName"
+              id="groupName"
+              autoComplete="group-name"
             />
             <Button
               type="submit"
@@ -261,9 +271,12 @@ const SignIn = () => {
             >
               {'Sign in'}
             </Button>
+            <Button fullWidth variant="contained" margin="normal" color="primary" onClick={deleteUser} className={classes.buttonPadding}>
+            {'Delete User from Group'}
+          </Button> 
           </form>
 
-          <div
+          {/* <div
             style={{
               display: 'flex',
               flexDirection: 'row',
@@ -273,7 +286,7 @@ const SignIn = () => {
           >
             <Link to="/password_reset">Forgot Password?</Link>
             <Link to="/signup">Register</Link>
-          </div>
+          </div> */}
         </div>
       </Paper>
     </React.Fragment>
