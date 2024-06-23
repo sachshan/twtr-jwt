@@ -9,6 +9,7 @@
     "@material-ui/lab": "^4.0.0-alpha.56",
     "axios": "^0.19.2",
     "github-markdown-css": "4.x",
+    "pigeon-maps": "^0.21.6",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-hook-form": "^6.4.1",

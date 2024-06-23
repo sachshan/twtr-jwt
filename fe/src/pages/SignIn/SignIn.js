@@ -147,7 +147,7 @@ const SignIn = () => {
         });
 
         // back to landing page!
-        history.push("/");
+        history.push("/tweets");
       })
       .catch( (err) => {
         alert(err);
