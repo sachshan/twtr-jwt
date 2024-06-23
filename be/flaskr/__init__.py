@@ -15,14 +15,14 @@ def create_app():
         app.logger.error("Unable to connect to Redis")
 
     @app.route('/healthz', methods=['GET'])
-    def get_server_health():
+    def get_server_healthz():
         if redis.get_redis_client().ping():
             return {'message': 'This system works'}, 200
         return {'message': 'Server not working'}, 500
     
 
     @app.route('/healthb', methods=['GET'])
-    def get_server_health():
+    def get_server_healthb():
         return {'message': 'This system works'}, 200
 
     from flaskr.map.routes import map
