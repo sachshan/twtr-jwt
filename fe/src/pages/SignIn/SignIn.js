@@ -99,8 +99,6 @@ const SignIn = () => {
   const history = useHistory()
   const [username, setUsername] = useState('')
   const [groupName, setGroupName] = useState('')
-  const [longitude, setLongitude] = useState(0)
-  const [latitude,setLatitude] =  useState(0)
 
   // we submit username and password, we receive
   // access and refresh tokens in return. These
@@ -110,11 +108,26 @@ const SignIn = () => {
 
     //console.log(username);
     //console.log(password);
+    let  latitude2 =0;
+    let longitude2 = 0;
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          console.dir(position);
+           latitude2 = position.coords.latitude;
+            longitude2  = position.coords.longitude;
+        });
+      }
+      else {
+        console.log("Geolocation is not supported by this browser.");
+      };
+          console.log("latitude2", latitude2);
+    console.log("longitude2",longitude2);
     const paramdict = {
       'name': username,
       'group_key': groupName,
-      'long': longitude,
-      'lat': latitude
+      'long': longitude2,
+      'lat': latitude2
 
     }
     const config = {

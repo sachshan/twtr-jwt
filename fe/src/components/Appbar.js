@@ -228,7 +228,7 @@ export default function Dashboard() {
               <ListItemIcon>
                 <DashboardIcon />
               </ListItemIcon>
-              <ListItemText primary="Tweets" />
+              <ListItemText primary="Maps" />
               { title === 'Tweets' && 
                 <ListItemIcon>
                   <IconButton onClick={handleDrawerCollapsed}>
@@ -238,7 +238,7 @@ export default function Dashboard() {
               }
             </ListItem>
 
-            {/* Compose menu item*/}
+            {/* Compose menu item
             <ListItem button component={Link} to="/compose" onClick={onItemClick('Compose')}>
               <ListItemIcon>
                 <DashboardIcon />
@@ -251,7 +251,7 @@ export default function Dashboard() {
                   </IconButton>
                 </ListItemIcon>
               }
-            </ListItem>
+            </ListItem> */}
 
             {/* SignUp menu item */}
             <ListItem button component={Link} to="/signin" onClick={onItemClick('Sign In')}>
