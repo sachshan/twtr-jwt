@@ -37,7 +37,7 @@ services:
       - frontend
       - backend
   
-  redis:
+  redis_cache:
     image: redis:alpine
     ports:
       - 6379:6379
