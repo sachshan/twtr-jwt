@@ -10,8 +10,8 @@ def create_app():
     CORS(app)
 
     try:
-        # redis = Redis(os.getenv('REDIS_HOST'), os.getenv('REDIS_PORT'))
-        redis = Redis('redis_cache', 6379)
+        redis = Redis(os.getenv('REDIS_HOST'), os.getenv('REDIS_PORT'))
+        # redis = Redis('redis_cache', 6379)
     except:
         app.logger.error("Unable to connect to Redis")
 

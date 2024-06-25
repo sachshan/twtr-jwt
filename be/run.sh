@@ -16,6 +16,7 @@ pip install -r requirements.txt
 
 export REDIS_HOST='localhost'
 export REDIS_PORT=6379
+export GOOGLE_MAPS_API_KEY='AIzaSyC-YxsZvVyRZFTbIGJ5g8q-o8luhek-bDw'
 
 # Run the Flask app
 flask --app flaskr run

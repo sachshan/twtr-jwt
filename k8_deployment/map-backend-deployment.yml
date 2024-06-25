@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: map-backend
+spec:
+  selector:
+    matchLabels:
+      app: map-backend
+  replicas: 3
+  minReadySeconds: 15
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: map-backend
+    spec:
+      containers:
+      - name: map-backend
+        image: sachdeva257/map-be
+        imagePullPolicy: Always
+        env:
+        - name: REDIS_HOST
+          value: "map-redis-svc"
+        - name: REDIS_PORT
+          value: "6379"
+        ports:
+        - containerPort: 5000

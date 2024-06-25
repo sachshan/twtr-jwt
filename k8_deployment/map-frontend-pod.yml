@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+ name: map-frontend
+ labels:
+  app: map-frontend
+spec:
+ containers:
+  - image: sachdeva257/map-fe
+    name: map-frontend
+    ports:
+    - containerPort: 80

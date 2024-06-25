@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: map-redis
+spec:
+  selector:
+    matchLabels:
+      app: map-redis
+  replicas: 3
+  minReadySeconds: 15
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: map-redis
+    spec:
+      containers:
+      - name: map-redis
+        image: redis:alpine
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 6379

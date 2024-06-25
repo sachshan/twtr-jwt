@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: map-frontend
+spec:
+  selector:
+    matchLabels:
+      app: map-frontend
+  replicas: 3
+  minReadySeconds: 15
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: map-frontend
+    spec:
+      containers:
+      - name: map-frontend
+        image: sachdeva257/map-fe
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80

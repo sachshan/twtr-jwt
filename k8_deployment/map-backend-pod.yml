@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+ name: map-backend
+ labels:
+  app: map-backend
+spec:
+ containers:
+  - image: sachdeva257/map-be
+    name: map-backend
+    ports:
+    - containerPort: 5000

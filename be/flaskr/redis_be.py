@@ -26,6 +26,7 @@ class Redis:
         location_directory = []
         for user_name in self.redis_client.smembers(group_key):
             location = self.redis_client.geopos("person", user_name)[-1]
+            # location is [latitude, longitude]
             location_directory.append({"user_name": user_name, "location": [location[-1], location[0]] })
         return location_directory
     

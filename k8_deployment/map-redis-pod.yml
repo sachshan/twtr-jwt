@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+ name: map-redis
+ labels:
+  app: map-redis
+spec:
+ containers:
+  - image: redis:alpine
+    name: map-redis
+    ports:
+    - containerPort: 6379
