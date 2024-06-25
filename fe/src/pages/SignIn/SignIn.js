@@ -143,8 +143,8 @@ const SignIn = () => {
 
     console.log("Signin.js: fetching from " + `${process.env.REACT_APP_API_SERVICE_URL}/map/user`)
     // verify user/pwd, get encoded userid as access and refresh tokens in return
-    fetch(`http://localhost:5004/v1/map/user`, config)
-    // fetch(`${process.env.REACT_APP_BE_NETWORK}:${process.env.REACT_APP_BE_PORT}/map/user`, config)
+    // fetch(`http://localhost:5004/v1/map/user`, config)
+    fetch(`${process.env.REACT_APP_API_SERVICE_URL}/map/user`, config)
     // fetch(`login`, config)
       .then(response => response.json())
       .then(data => {
@@ -188,8 +188,8 @@ const SignIn = () => {
 
     console.log("Signin.js: fetching from " + `${process.env.REACT_APP_API_SERVICE_URL}/map/user`)
 
-    // fetch(`${process.env.REACT_APP_BE_NETWORK}:${process.env.REACT_APP_BE_PORT}/map/user`, config)
-    fetch(`http://localhost:5004/v1/map/user`, config)
+    fetch(`${process.env.REACT_APP_API_SERVICE_URL}/map/user`, config)
+    // fetch(`http://localhost:5004/v1/map/user`, config)
       .then(response => response.json())
       .then(data => {
 

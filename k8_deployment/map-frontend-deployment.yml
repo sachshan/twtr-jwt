@@ -20,7 +20,10 @@ spec:
     spec:
       containers:
       - name: map-frontend
-        image: sachdeva257/map-fe
+        image: sachdeva257/map-fe:latest
         imagePullPolicy: Always
+        env:
+        - name: REACT_APP_API_SERVICE_URL
+          value: "http://map-backend-lb/v1"
         ports:
         - containerPort: 80

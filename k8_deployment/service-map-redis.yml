@@ -8,4 +8,4 @@ spec:
     protocol: TCP
     targetPort: 6379
   selector:
-    app: map-redis-svc
+    app: map-redis
