@@ -5,7 +5,7 @@ import dotenv
 dotenv.load_dotenv()
 
 def get_places(location, radius, place_type):
-    gmaps = googlemaps.Client(key=os.getenv('GOOGLE_API_KEY'))
+    gmaps = googlemaps.Client(key=os.getenv('GOOGLE_MAPS_API_KEY'))
     places_data = []
     response = gmaps.places_nearby(location={'lat':location[0], 'lng':location[1]}, radius=radius, type=place_type)
     places_data.extend(response['results'])
