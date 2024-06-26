@@ -110,7 +110,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"group_key\": \"evening_hang\",\n    \"name\": \"Surabhi\"\n}",
+					"raw": "{\n\t\"group_key\": \"afternoon meeting\",\n    \"name\": \"Shantanu\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -150,6 +150,40 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Centroid",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/v1/map/centroid/:group_key",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"map",
+						"centroid",
+						":group_key"
+					],
+					"variable": [
+						{
+							"key": "group_key",
+							"value": "Sarma"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Places",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
 		}
 	],
 	"event": [
@@ -159,7 +193,7 @@
 				"type": "text/javascript",
 				"exec": [
 					"// var base_url = 'http://127.0.0.1:5000'",
-					"var base_url = 'localhost:5004'",
+					"var base_url = 'a7da08644a17a429fb5ea74eecccaaa7-865736772.us-east-1.elb.amazonaws.com'",
 					"pm.environment.set('base_url', base_url)",
 					""
 				]
