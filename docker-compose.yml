@@ -9,7 +9,7 @@ services:
     ports:
       - 5004:5000
     environment:
-      - REDIS_HOST=redis
+      - REDIS_HOST=redis_cache
       - REDIS_PORT=6379
     networks:
       - backend
@@ -27,9 +27,7 @@ services:
       - 3007:80
     environment:
       - NODE_ENV=development
-      - REACT_APP_BE_NETWORK=backend
-      - REACT_APP_BE_PORT=5000
-      - REACT_APP_API_SERVICE_URL=backend:5000
+      - REACT_APP_API_SERVICE_URL=http://backend:5000
     depends_on:
       - be
     # specifies frontend and backend as the networks the fe service will have access to
