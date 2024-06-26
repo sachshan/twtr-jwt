@@ -99,6 +99,7 @@ const SignIn = () => {
   const history = useHistory()
   const [username, setUsername] = useState('')
   const [groupName, setGroupName] = useState('')
+  const [error, setError] = useState('');
 
   // we submit username and password, we receive
   // access and refresh tokens in return. These
@@ -108,26 +109,28 @@ const SignIn = () => {
 
     //console.log(username);
     //console.log(password);
-    let  latitude2 =0;
-    let longitude2 = 0;
+   setError('');
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          console.dir(position);
-           latitude2 = position.coords.latitude;
-            longitude2  = position.coords.longitude;
-        });
+      navigator.geolocation.getCurrentPosition((position) =>{
+        console.log("location details")
+        console.dir(position.coords);
+      })
+      navigator.geolocation.getCurrentPosition(fetchLogin, showError);
       }
       else {
         console.log("Geolocation is not supported by this browser.");
       };
-          console.log("latitude2", latitude2);
-    console.log("longitude2",longitude2);
+
+
+
+  }
+
+  function fetchLogin(position) {
     const paramdict = {
       'name': username,
       'group_key': groupName,
-      'long': longitude2,
-      'lat': latitude2
+      'long': position.coords.longitude,
+      'lat': position.coords.latitude
 
     }
     const config = {
@@ -156,7 +159,8 @@ const SignIn = () => {
         console.log('---');
         console.dir(data);
         saveAuthorisation({
-          groupKey: groupName
+          groupKey: groupName,
+          username: username
         });
 
         // back to landing page!
@@ -166,6 +170,10 @@ const SignIn = () => {
         alert(err);
         console.log(err);
       });
+  }
+
+  function showError () {
+    setError("Location is not enabled");
   }
 
   function deleteUser() {
@@ -287,6 +295,7 @@ const SignIn = () => {
             <Button fullWidth variant="contained" margin="normal" color="primary" onClick={deleteUser} className={classes.buttonPadding}>
             {'Delete User from Group'}
           </Button> 
+          {error != "" ? (<h1>{error}</h1>):(<h1></h1>)}
           </form>
 
           {/* <div

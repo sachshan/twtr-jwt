@@ -2,42 +2,52 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ScrollView, StyleSheet, ActivityIndicator } from "react-native";
 import TweetList from "./TweetList";
 import { Map, Marker } from "pigeon-maps";
+import Button from '@material-ui/core/Button'
 
 const THome = () => {
+
+   // save keys to local storage
+   const localStorageAuthKey = 'twtr:auth';
+   function saveAuthorisation(keys) {
+     if (typeof Storage !== 'undefined') {
+       try {
+         localStorage.setItem(localStorageAuthKey, JSON.stringify(keys));
+       } catch (ex) {
+         console.log(ex);
+       }
+     } else {
+       // No web storage Support :-(
+     }
+   }
+ 
+   function getAuthorisation() {
+     if (typeof Storage !== 'undefined') {
+       try {
+         var keys = JSON.parse(localStorage.getItem(localStorageAuthKey));
+         return keys;
+       } catch (ex) {
+         console.log(ex);
+       }
+     } else {
+       // No web storage Support :-(
+     }
+   }  
+
   const [tweets, setTweets] = useState([]);
   const [loading, setLoading] = useState(true);   
   const [locations, setLocations] = useState([]);
+  const [restaurantLocations, setRestaurantLocations] = useState([]);
 
-  // save keys to local storage
-  const localStorageAuthKey = 'twtr:auth';
-  function saveAuthorisation(keys) {
-    if (typeof Storage !== 'undefined') {
-      try {
-        localStorage.setItem(localStorageAuthKey, JSON.stringify(keys));
-      } catch (ex) {
-        console.log(ex);
-      }
-    } else {
-      // No web storage Support :-(
-    }
-  }
+  const [username, setUsername] = useState(getAuthorisation().username);
+  const [groupName, setGroupName] = useState(getAuthorisation().groupKey);
+  const [centroid, setCentroid] = useState([42.338655864160486, -71.08808567486311]);
 
-  function getAuthorisation() {
-    if (typeof Storage !== 'undefined') {
-      try {
-        var keys = JSON.parse(localStorage.getItem(localStorageAuthKey));
-        return keys.groupKey;
-      } catch (ex) {
-        console.log(ex);
-      }
-    } else {
-      // No web storage Support :-(
-    }
-  }  
+ 
 
   const pollingRef = useRef(); // A "ref" tracks a value like state, but doesn't trigger a rerender
 
   const pollLocations = useCallback(() => {
+    //PROCESS - GETTING ALL USERS LOCATION
     console.log("just polled");
     //poll for group locations
     const config = {
@@ -47,14 +57,12 @@ const THome = () => {
         'Content-Type': 'application/json',
       }
     }
-
-    const groupkey = getAuthorisation();
+    const groupkey = getAuthorisation().groupKey;
     console.log("Signin.js: fetching from " + `${process.env.REACT_APP_API_SERVICE_URL}/map/${groupkey}`)
-    // verify user/pwd, get encoded userid as access and refresh tokens in return
     // fetch(`http://localhost:5004/v1/map/${groupkey}`, config)
-    // fetch(`${process.env.REACT_APP_BE_NETWORK}:${process.env.REACT_APP_BE_PORT}/map/user`, config)
-    // fetch(`login`, config)
-    fetch(`${process.env.REACT_APP_API_SERVICE_URL}/map/${groupkey}`, config)
+    fetch(`${process.env.REACT_APP_BE_NETWORK}:${process.env.REACT_APP_BE_PORT}/map/user`, config)
+    //below is the final link
+    // fetch(`${process.env.REACT_APP_API_SERVICE_URL}/map/${groupkey}`, config)
       .then(response => response.json())
       .then(data => {
         // update Location Array with all the locations with their Names
@@ -66,12 +74,37 @@ const THome = () => {
         console.log(err);
       });
 
-      //send device location
+      //SENDING DEVICE LOCATION
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
-            const { latitude, longitude } = position.coords;
-           
+            const paramdict = {
+              'name': username,
+              'group_key': groupName,
+              'long': position.coords.longitude,
+              'lat': position.coords.latitude
+        
+            }
+            const config = {
+              method: 'POST',
+              headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(paramdict)
+            }
+            console.log("sending out:");
+            console.log(paramdict);
+        
+            console.log("Signin.js: fetching from " + `${process.env.REACT_APP_API_SERVICE_URL}/map/user`)
+            // fetch(`http://localhost:5004/v1/map/user`, config)
+            fetch(`${process.env.REACT_APP_API_SERVICE_URL}/map/user`, config)
+            // fetch(`login`, config)
+              .then(response => response.json())
+              .catch( (err) => {
+                alert(err);
+                console.log(err);
+              });
 
           });
         }
@@ -82,7 +115,10 @@ const THome = () => {
     pollingRef.current = setTimeout(pollLocations, 4000);   
   }, []);
 
+
+
   useEffect(() => {
+    //GET INTIAL LOCATIONS
     const config = {
       method: 'GET',
       headers: {
@@ -90,7 +126,6 @@ const THome = () => {
         'Content-Type': 'application/json',
       }
     }
-
     const groupkey = getAuthorisation();
     console.log("Signin.js: fetching from " + `${process.env.REACT_APP_API_SERVICE_URL}/map/user`)
     // verify user/pwd, get encoded userid as access and refresh tokens in return
@@ -108,6 +143,24 @@ const THome = () => {
         console.log(err);
       });
 
+      //GET CENTROID
+      // verify user/pwd, get encoded userid as access and refresh tokens in return
+      fetch(`http://localhost:5004/v1/map/centroid/${groupkey}`, config)
+      // fetch(`${process.env.REACT_APP_API_SERVICE_URL}/map/${groupkey}`, config)
+      // fetch(`login`, config)
+        .then(response => response.json())
+        .then(data => {
+          // update Location Array with all the locations with their Names
+        
+          setCentroid(data);
+        })
+        .catch((err) => {
+          alert(err);
+          setCentroid([]);
+          console.log(err);
+        });
+
+
     pollingRef.current = setTimeout(pollLocations, 4000);
     return () => {
       // Clear the timeout when the component unmounts
@@ -120,7 +173,7 @@ const THome = () => {
   return (
     <div className='mainBody'>
       {/* Map Structure */}
-      <Map height={500} defaultCenter={[42.338655864160486, -71.08808567486311]} defaultZoom={18}>
+      <Map height={500} defaultCenter={centroid} defaultZoom={18}>
         {locations.map((point, i) => (
           <Marker key={i} width={50} anchor={point.location}>
             <div className='mapPoint'>
@@ -129,7 +182,13 @@ const THome = () => {
           </Marker>
         ))}
       </Map>
-
+      <Button
+              type="button"
+              variant="contained"
+              color="primary"
+            >
+              {'Get Restaurants'}
+            </Button>
       {/* Users Structure */}
       <ScrollView noSpacer={true} noScroll={true} style={styles.container}>
       <ul>
