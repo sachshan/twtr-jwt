@@ -49,12 +49,12 @@ const THome = () => {
     }
 
     const groupkey = getAuthorisation();
-    console.log("Signin.js: fetching from " + `${process.env.REACT_APP_API_SERVICE_URL}/map/user`)
+    console.log("Signin.js: fetching from " + `${process.env.REACT_APP_API_SERVICE_URL}/map/${groupkey}`)
     // verify user/pwd, get encoded userid as access and refresh tokens in return
     // fetch(`http://localhost:5004/v1/map/${groupkey}`, config)
     // fetch(`${process.env.REACT_APP_BE_NETWORK}:${process.env.REACT_APP_BE_PORT}/map/user`, config)
     // fetch(`login`, config)
-    fetch(`${process.env.REACT_APP_API_SERVICE_URL}/v1/map/${groupkey}`, config)
+    fetch(`${process.env.REACT_APP_API_SERVICE_URL}/map/${groupkey}`, config)
       .then(response => response.json())
       .then(data => {
         // update Location Array with all the locations with their Names
@@ -95,7 +95,7 @@ const THome = () => {
     console.log("Signin.js: fetching from " + `${process.env.REACT_APP_API_SERVICE_URL}/map/user`)
     // verify user/pwd, get encoded userid as access and refresh tokens in return
     // fetch(`http://localhost:5004/v1/map/${groupkey}`, config)
-    fetch(`${process.env.REACT_APP_API_SERVICE_URL}/v1/map/${groupkey}`, config)
+    fetch(`${process.env.REACT_APP_API_SERVICE_URL}/map/${groupkey}`, config)
     // fetch(`login`, config)
       .then(response => response.json())
       .then(data => {

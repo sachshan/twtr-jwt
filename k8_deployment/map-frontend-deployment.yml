@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: map-frontend
-        image: sachdeva257/map-fe:latest
+        image: sachdeva257/map-fe
         imagePullPolicy: Always
         env:
         - name: REACT_APP_API_SERVICE_URL
